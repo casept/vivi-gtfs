@@ -1,0 +1,50 @@
+route_long_name,route_short_name,agency_id,route_type,route_id,route_color
+Aizkraukle - Rīga,,pv,2,2031,BF9AC6
+Carnikava - Rīga,,pv,2,2301,F8DB22
+Daugavpils - Rīga,,pv,2,2431,BF9AC6
+Dubulti - Rīga,,pv,2,2521,04ABE8
+Gulbene - Rīga,,pv,2,2911,BF9AC6
+Indra - Rīga,,pv,2,3131,BF9AC6
+Jelgava - Rīga,,pv,2,3491,EA6449
+Krustpils - Rīga,,pv,2,2731,BF9AC6
+Krāslava - Rīga,,pv,2,2691,BF9AC6
+Lielvārde - Rīga,,pv,2,2981,BF9AC6
+Liepāja - Rīga,,pv,2,3001,EA6449
+Lilaste-Rīga,,pv,2,3061,F8DB22
+Līvāni - Rīga,,pv,2,3081,BF9AC6
+Madona - Rīga,,pv,2,3151,BF9AC6
+Ogre - Rīga,,pv,2,3391,BF9AC6
+Rēzekne 2 - Rīga,,pv,2,3721,BF9AC6
+Rīga - Aizkraukle,,pv,2,1203,BF9AC6
+Rīga - Carnikava,,pv,2,1230,F8DB22
+Rīga - Daugavpils,,pv,2,1243,BF9AC6
+Rīga - Dubulti,,pv,2,1252,04ABE8
+Rīga - Gulbene,,pv,2,1291,BF9AC6
+Rīga - Indra,,pv,2,1313,BF9AC6
+Rīga - Jelgava,,pv,2,1349,EA6449
+Rīga - Krustpils,,pv,2,1273,BF9AC6
+Rīga - Krāslava,,pv,2,1269,BF9AC6
+Rīga - Lielvārde,,pv,2,1298,BF9AC6
+Rīga - Liepāja,,pv,2,1300,EA6449
+Rīga - Lilaste,,pv,2,1306,F8DB22
+Rīga - Madona,,pv,2,1315,BF9AC6
+Rīga - Ogre,,pv,2,1339,BF9AC6
+Rīga - Rēzekne 2,,pv,2,1372,BF9AC6
+Rīga - Saulkrasti,,pv,2,1398,F8DB22
+Rīga - Sigulda,,pv,2,1408,8BC540
+Rīga - Skulte,,pv,2,1399,F8DB22
+Rīga - Sloka,,pv,2,1394,04ABE8
+Rīga - Tukums 2,,pv,2,1397,04ABE8
+Rīga - Valga,,pv,2,1460,8BC540
+Rīga - Valmiera,,pv,2,1432,8BC540
+Rīga - Zilupe,,pv,2,1446,BF9AC6
+Rīga - Ķemeri,,pv,2,1286,04ABE8
+Saulkrasti - Rīga,,pv,2,3981,F8DB22
+Sigulda - Rīga,,pv,2,4081,8BC540
+Skulte - Rīga,,pv,2,3991,F8DB22
+Sloka - Rīga,,pv,2,3941,04ABE8
+Tukums 2 - Rīga,,pv,2,3971,04ABE8
+Valga - Rīga,,pv,2,4601,8BC540
+Valmiera - Rīga,,pv,2,4321,8BC540
+Zilupe - Rīga,,pv,2,4461,BF9AC6
+Ķemeri - Rīga,,pv,2,2861,04ABE8
