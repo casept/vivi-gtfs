@@ -66,7 +66,9 @@ func createGtfsRtMsg(data []GtfsRtUpdateData) []byte {
 	if err != nil {
 		log.Fatalf("Failed to serialize RTFS-RT protobuf message: %s\n", err)
 	}
-	log.Printf("Message: %s\n", feed.String())
+	if config.verbose {
+		log.Printf("GTFS-RT message:\n%s\n", feed.String())
+	}
 	return buf
 }
 

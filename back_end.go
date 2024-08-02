@@ -91,8 +91,11 @@ func transformBackEndMsgToGtfsRt(raw []byte) []byte {
 		route := datum.Name
 		lat := datum.ReturnValue.AnimatedCoord[0]
 		lon := datum.ReturnValue.AnimatedCoord[1]
-		log.Printf("Train: %s, GPS: %t, delay: %d min, route: %s, lat: %f, lon: %f\n",
+		if config.verbose {
+			log.Printf("Train: %s, GPS: %t, delay: %d min, route: %s, lat: %f, lon: %f\n",
 			trainNum, GPSActive, delay, route, lat, lon)
+		}
+
 
 		tripId := lookupTripId(time.Now(), datum.ReturnValue.Train)
 		if tripId == "" {
