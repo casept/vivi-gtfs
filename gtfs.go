@@ -1,7 +1,12 @@
 package main
 
 import (
+	"archive/zip"
+	"fmt"
+	"io"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/artonge/go-gtfs"
@@ -12,8 +17,84 @@ import (
 
 var g *gtfs.GTFS = nil
 
+// See https://stackoverflow.com/questions/20357223/easy-way-to-unzip-file
+// Modfified to unzip to a temporary directory and return path to it
+func unzip(src string) (string, error) {
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		if err := r.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	dir, err := os.MkdirTemp("", "vivi-gtfs")
+	if err != nil {
+		return "", err
+	}
+
+	// Closure to address file descriptors issue with all the deferred .Close() methods
+	extractAndWriteFile := func(f *zip.File) error {
+		rc, err := f.Open()
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if err := rc.Close(); err != nil {
+				panic(err)
+			}
+		}()
+
+		path := filepath.Join(dir, f.Name)
+
+		// Check for ZipSlip (Directory traversal)
+		if !strings.HasPrefix(path, filepath.Clean(dir)+string(os.PathSeparator)) {
+			return fmt.Errorf("illegal file path: %s", path)
+		}
+
+		if f.FileInfo().IsDir() {
+			os.MkdirAll(path, f.Mode())
+		} else {
+			os.MkdirAll(filepath.Dir(path), f.Mode())
+			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			if err != nil {
+				return err
+			}
+			defer func() {
+				if err := f.Close(); err != nil {
+					panic(err)
+				}
+			}()
+
+			_, err = io.Copy(f, rc)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	for _, f := range r.File {
+		err := extractAndWriteFile(f)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return dir, nil
+}
+
 func initGtfs(dataPath string) {
-	gt, err := gtfs.Load(dataPath, nil)
+	// Extract GTFS zip file, library only supports loading from directory
+	dir, err := unzip(dataPath)
+	if err != nil {
+		log.Fatalf("Failed to extract GTFS data for mapping trip IDs: %s\n", err)
+	}
+	defer os.RemoveAll(dir)
+
+	gt, err := gtfs.Load(dir, nil)
 	if err != nil {
 		log.Fatalf("Failed to load GTFS data for mapping trip IDs: %s\n", err)
 	}

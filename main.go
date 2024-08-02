@@ -13,9 +13,8 @@ const URL = "wss://trainmap.pv.lv/ws"
 func main() {
 	handleCliArgs()
 
-	dataPath := "./lv_pv.gtfs"
-	log.Printf("Loading static GTFS data from %s\n", dataPath)
-	initGtfs(dataPath)
+	log.Printf("Loading static GTFS data from %s\n", config.gtfsPath)
+	initGtfs(config.gtfsPath)
 
 	log.Println("Connecting to API...")
 	ws, _, err := websocket.DefaultDialer.Dial(URL, nil)

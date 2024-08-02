@@ -1,2 +1,0 @@
-agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_email
-pv,Pasažieru Vilciens,https://www.pv.lv,Europe/Riga,lv,67232135,ipunkts@pv.lv

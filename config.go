@@ -2,11 +2,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 )
 
 type Config struct {
+	gtfsPath   string
 	listenAddr string
 	verbose    bool
 }
@@ -14,13 +14,13 @@ type Config struct {
 var config Config
 
 func handleCliArgs() {
-	config.listenAddr = *flag.String("listenAddr", "localhost:1337", "Address to expose the GTFS-RT HTTP server on")
-	config.verbose = *flag.Bool("verbose", false, "Activate verbose debug logging")
+	flag.StringVar(&config.gtfsPath, "gtfs-path", "", "Path to ZIP containing static GTFS data to match against")
+	flag.StringVar(&config.listenAddr, "listen-addr", "localhost:1337", "Address to expose the GTFS-RT HTTP server on")
+	flag.BoolVar(&config.verbose, "verbose", false, "Activate verbose debug logging")
 	flag.Parse()
-}
 
-var Usage = func() {
-	w := flag.CommandLine.Output()
-	fmt.Fprintf(w, "Usage of %s:\n", os.Args[0])
-	flag.PrintDefaults()
+	if config.gtfsPath == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
 }
