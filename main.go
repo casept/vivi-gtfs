@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -17,7 +16,6 @@ func main() {
 	dataPath := "./lv_pv.gtfs"
 	log.Printf("Loading static GTFS data from %s\n", dataPath)
 	initGtfs(dataPath)
-	lookupTripId(time.Now(), "")
 
 	log.Println("Connecting to API...")
 	ws, _, err := websocket.DefaultDialer.Dial(URL, nil)

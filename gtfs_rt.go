@@ -14,6 +14,7 @@ type GtfsRtUpdateData struct {
 	lat       float32
 	lon       float32
 	tripId    string
+	stopId    string
 }
 
 func addToFeed(msg *gtfs.FeedMessage, data GtfsRtUpdateData) {
@@ -28,6 +29,19 @@ func addToFeed(msg *gtfs.FeedMessage, data GtfsRtUpdateData) {
 		/* TODO: TripDescriptor */
 		Trip:  &descr,
 		Delay: &data.delaySecs,
+		/*
+			The API doesn't seem to provide delay data for future stops, so we can only provide an update for the next stop.
+			MOTIS at least correctly extrapolates the delay to affect all future stops equally.
+		*/
+		// TODO: Memorize delays for this trip in the past, to provide to clients which missed previous updates
+		StopTimeUpdate: []*gtfs.TripUpdate_StopTimeUpdate{
+			{
+				StopId: &data.stopId,
+				Arrival: &gtfs.TripUpdate_StopTimeEvent{
+					Delay: &data.delaySecs,
+				},
+			},
+		},
 	}
 	vPos := gtfs.VehiclePosition{
 		Position: &pos,

@@ -8,7 +8,7 @@ import (
 
 type Config struct {
 	listenAddr string
-	verbose bool
+	verbose    bool
 }
 
 var config Config

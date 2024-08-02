@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"time"
+	"strings"
 
 	"github.com/artonge/go-gtfs"
 )
@@ -20,11 +20,34 @@ func initGtfs(dataPath string) {
 	g = gt
 }
 
-func lookupTripId(t time.Time, serviceId string) string {
+func lookupTripId(serviceId string) string {
 	for _, trip := range g.Trips {
-		if trip.ServiceID == serviceId {
+		/*
+		 * Service IDs usually contain the train number, but sometimes in strange forms with other junk appended.
+		 * Try to work around this by counting substring matches as sufficient.
+		 */
+		if strings.Contains(trip.ServiceID, serviceId) {
 			// FIXME: A service does not have a unique trip ID, need to look it up based on current time somehow
 			return trip.ID
+		}
+	}
+	return ""
+}
+func lookupGtfsStopIdFromName(name string) string {
+	// Some stop names differ between GTFS feed and realtime data
+	stopNameFixups := map[string]string{
+		"Tukums 1":  "Tukums I",
+		"Tukums 2":  "Tukums II",
+		"BA Turība": "Biznesa Augstskola Turība",
+		"Rēzekne 2": "Rēzekne II",
+	}
+	if fixedName, ok := stopNameFixups[name]; ok {
+		name = fixedName
+	}
+
+	for _, stop := range g.Stops {
+		if strings.ToLower(stop.Name) == strings.ToLower(name) {
+			return stop.ID
 		}
 	}
 	return ""

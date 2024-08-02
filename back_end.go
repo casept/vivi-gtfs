@@ -93,19 +93,25 @@ func transformBackEndMsgToGtfsRt(raw []byte) []byte {
 		lon := datum.ReturnValue.AnimatedCoord[1]
 		if config.verbose {
 			log.Printf("Train: %s, GPS: %t, delay: %d min, route: %s, lat: %f, lon: %f\n",
-			trainNum, GPSActive, delay, route, lat, lon)
+				trainNum, GPSActive, delay, route, lat, lon)
 		}
 
-
-		tripId := lookupTripId(time.Now(), datum.ReturnValue.Train)
+		tripId := lookupTripId(datum.ReturnValue.Train)
 		if tripId == "" {
-			log.Printf("Failed to find matching trip ID for back end datum %v, not including in GTFS-RT update\n", datum)
+			// TODO: Some train names don't match here, but it may be possible to reconstruct based on route, time and current position
+			log.Printf("Failed to find matching trip ID for train name %s, not including in GTFS-RT update, Outdated GTFS feed?\n", datum.ReturnValue.Train)
+		}
+		mappedStopId := lookupGtfsStopIdFromName(datum.ReturnValue.NextStopObj.Title)
+		if mappedStopId == "" {
+			// If this gets printed, you may need to add the stop to the fixup table in the lookup function
+			log.Printf("Failed to find matching stop ID for stop name %s, not including in GTFS-RT update. Outdated GTFS feed?\n", datum.ReturnValue.NextStopObj.Title)
 		}
 		transformedDatum := GtfsRtUpdateData{
 			delaySecs: int32(60 * delay),
 			lat:       float32(lat),
 			lon:       float32(lon),
 			tripId:    tripId,
+			stopId:    mappedStopId,
 		}
 		data = append(data, transformedDatum)
 	}
